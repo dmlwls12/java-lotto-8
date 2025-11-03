@@ -1,7 +1,6 @@
 package lotto;
 
 import camp.nextstep.edu.missionutils.Console;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -25,8 +24,8 @@ public final class InputView {
     public static List<Integer> readWinningNumbers() {
         System.out.println("\n당첨 번호를 입력해주세요.");
         String line = Console.readLine();
-        String[] parts = line.split(",");
 
+        String[] parts = line.split(",");
         if (parts.length != 6) {
             throw new IllegalArgumentException("[ERROR] 당첨 번호는 쉼표로 구분된 6개여야 합니다.");
         }
@@ -35,29 +34,15 @@ public final class InputView {
         Set<Integer> uniqueNumbers = new HashSet<>();
 
         for (int i = 0; i < parts.length; i++) {
-            String trimmed = parts[i].trim();
-            if (trimmed.isEmpty()) {
-                throw new IllegalArgumentException("[ERROR] 당첨 번호는 쉼표로 구분된 6개여야 합니다.");
-            }
-
-            int value;
-
-            try {
-                value = Integer.parseInt(trimmed);
-            } catch (NumberFormatException e) {
-                throw new IllegalArgumentException("[ERROR] 당첨 번호는 숫자여야 합니다.");
-            }
-
+            int value = parseIntStrict(parts[i], "[ERROR] 당첨 번호는 숫자여야 합니다.");
             if (value < MIN || value > MAX) {
                 throw new IllegalArgumentException("[ERROR] 로또 번호는 1부터 45 사이의 숫자여야 합니다.");
             }
             if (!uniqueNumbers.add(value)) {
                 throw new IllegalArgumentException("[ERROR] 로또 번호는 중복될 수 없습니다.");
             }
-
             numbers.add(value);
         }
-
         return numbers;
     }
 
@@ -77,5 +62,13 @@ public final class InputView {
             throw new IllegalArgumentException("[ERROR] 보너스 번호는 당첨 번호와 중복될 수 없습니다.");
         }
         return bonus;
+    }
+
+    private static int parseIntStrict(String s, String errorMsg) {
+        try {
+            return Integer.parseInt(s.trim());
+        } catch (Exception e) {
+            throw new IllegalArgumentException(errorMsg);
+        }
     }
 }

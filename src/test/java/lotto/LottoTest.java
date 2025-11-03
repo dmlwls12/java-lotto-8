@@ -3,9 +3,11 @@ package lotto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.*;
 
 class LottoTest {
     @Test
@@ -21,5 +23,15 @@ class LottoTest {
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
-    // TODO: 추가 기능 구현에 따른 테스트 코드 작성
+    @Test void lotto_must_have_6_unique_numbers_in_1_to_45() {
+        assertThrows(IllegalArgumentException.class, () -> new Lotto(Arrays.asList(1,2,3,4,5)));
+        assertThrows(IllegalArgumentException.class, () -> new Lotto(Arrays.asList(1,2,3,4,5,46)));
+        assertThrows(IllegalArgumentException.class, () -> new Lotto(Arrays.asList(1,1,3,4,5,6)));
+        assertDoesNotThrow(() -> new Lotto(Arrays.asList(1,2,3,4,5,6)));
+    }
+
+    @Test void lotto_is_sorted_ascending() {
+        Lotto l = new Lotto(Arrays.asList(6,5,4,3,2,1));
+        assertEquals(Arrays.asList(1,2,3,4,5,6), l.getNumbers());
+    }
 }
