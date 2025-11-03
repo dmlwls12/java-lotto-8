@@ -18,6 +18,27 @@ public class Application {
 
         OutputView.printPurchased(count);
         OutputView.printTickets(tickets);
+
+        List<Integer> winningNumbers = retryUntil(InputView::readWinningNumbers);
+        int bonus = retryUntil(InputView::readBonusNumber);
+        Winning winning = retryUntil(() -> new Winning(winningNumbers, bonus));
+
+        Result result = Result.of(tickets, winning);
+
+        OutputView.printStatisticsHeader();
+        OutputView.printRankLine(Rank.FIFTH, result.counts().get(Rank.FIFTH));
+        OutputView.printRankLine(Rank.FOURTH, result.counts().get(Rank.FOURTH));
+        OutputView.printRankLine(Rank.THIRD, result.counts().get(Rank.THIRD));
+        OutputView.printRankLine(Rank.SECOND, result.counts().get(Rank.SECOND));
+        OutputView.printRankLine(Rank.FIRST, result.counts().get(Rank.FIRST));
+
+        double yieldPercent = calcYieldPercent(result.totalPrize(), money.amount());
+        OutputView.printYield(yieldPercent);
+    }
+
+    private static double calcYieldPercent(long totalPrize, long purchaseAmount) {
+        double raw = (double) totalPrize * 100.0 / purchaseAmount;
+        return Math.round(raw * 10.0) / 10.0;
     }
 
     private static <T> T retryUntil(SupplierWithException<T> supplier) {
