@@ -2,7 +2,9 @@ package lotto;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Application {
     public static void main(String[] args) {
@@ -20,9 +22,10 @@ public class Application {
         OutputView.printTickets(tickets);
 
         List<Integer> winningNumbers = retryUntil(InputView::readWinningNumbers);
-        int bonus = retryUntil(InputView::readBonusNumber);
-        Winning winning = retryUntil(() -> new Winning(winningNumbers, bonus));
 
+        Set<Integer> winningSet = new HashSet<>(winningNumbers);
+        int bonus = retryUntil(() -> InputView.readBonusNumber(winningSet));
+        Winning winning = new Winning(winningNumbers, bonus);
         Result result = Result.of(tickets, winning);
 
         OutputView.printStatisticsHeader();
