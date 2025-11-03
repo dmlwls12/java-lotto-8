@@ -1,4 +1,3 @@
-// src/main/java/lotto/Application.java
 package lotto;
 
 import java.util.ArrayList;

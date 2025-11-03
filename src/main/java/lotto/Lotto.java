@@ -1,4 +1,3 @@
-// src/main/java/lotto/Lotto.java
 package lotto;
 
 import java.util.*;
